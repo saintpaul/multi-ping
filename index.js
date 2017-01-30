@@ -46,7 +46,7 @@ var server = http.createServer(function(request, response) {
 
 	// parallel execution of all the calls and send response when all terminated
 	async.parallel(localCalls, function(err, results) {
-		var resultsStr = ((err !== null)?'failed ':'ok ')+JSON.stringify(results);
+		var resultsStr = ((err !== null)?'failed':'ok');
 		var returnCode = (err !== null)?500:200;
 		sendResponse(response, returnCode, resultsStr);
 	});
