@@ -4,16 +4,20 @@ fs = require('fs')
 
 var config = {'myPort': 8080};
 
-// read config file (please setup the right path)
-fs.readFile('./config', 'utf8', function (err,data) {
-  if (err) {
-    console.log('error loading config file: '+err);
-    process.exit(-1);
-  }
-  config.ports = data.trim().split(';');
-  console.log('Will ping those ports: '+config.ports);
-});
-
+if(!process.env.PING_PORTS){
+	// read config file (please setup the right path)
+	fs.readFile('./config', 'utf8', function (err,data) {
+  		if (err) {
+    			console.log('error loading config file: '+err);
+    			process.exit(-1);
+  		}
+  		config.ports = data.trim().split(';');
+  		console.log('Will ping those ports: '+config.ports);
+	});
+}else{
+	config.ports = process.env.PING_PORTS.trim().split(';');
+	console.log('Will ping those ports: '+config.ports);
+}
 
 function getLocalPing(port) {
 	return function(callback) {
@@ -53,7 +57,7 @@ var server = http.createServer(function(request, response) {
 });
 
 // start http server
-server.listen(config.myPort, function() {
+server.listen(config.myPort, "127.0.0.1", function() {
 	console.log('Listening on '+config.myPort);
 });
 
