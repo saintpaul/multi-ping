@@ -57,7 +57,7 @@ var server = http.createServer(function(request, response) {
 });
 
 // start http server
-server.listen(config.myPort, "127.0.0.1", function() {
+server.listen(config.myPort, function() {
 	console.log('Listening on '+config.myPort);
 });
 
