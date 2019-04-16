@@ -25,11 +25,11 @@ if(!process.env.PING_ENDPOINTS){
     			process.exit(-1);
   		}
   		config.endPoints = getEndPointsFromArgs(data);
-  		console.log('Will ping those endPoints: ' + config.endPoints);
+  		console.log('Will ping those endPoints: ', config.endPoints);
 	});
 }else{
 	config.endPoints = getEndPointsFromArgs(process.env.PING_ENDPOINTS);
-	console.log('Will ping those endPointss: ' + config.endPoints);
+	console.log('Will ping those endPoints: ', config.endPoints);
 }
 
 function getLocalPing(endPoint) {
