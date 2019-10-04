@@ -36,10 +36,10 @@ function getLocalPing(endPoint) {
 	return function(callback) {
 		var request = http.request({host: endPoint.host, port: endPoint.port, path: '/ping', method: 'GET' } , function(res) {
 			// error if statusCode != 200
-		    callback((res.statusCode != 200)?true:null, res.statusCode);
+		    callback((res.statusCode != 200)?true:null, endPoint.host + ' -> ' + res.statusCode );
 		});
 		request.on('error', function(e) {
-			callback(true, 500);
+			callback(true, endPoint.host + ' -> 500');
 		});
 		request.end();
 	}
@@ -63,6 +63,12 @@ var server = http.createServer(function(request, response) {
 
 	// parallel execution of all the calls and send response when all terminated
 	async.parallel(localCalls, function(err, results) {
+		if (err !== null) {
+			console.log('ERROR: One of the pings failed! ', JSON.stringify(results, null, 2));
+		}
+		if (process.env.DEBUG && err === null) {
+			console.log('pings:', JSON.stringify(results, null, 2));
+		}
 		var resultsStr = ((err !== null)?'failed':'ok');
 		var returnCode = (err !== null)?500:200;
 		sendResponse(response, returnCode, resultsStr);
