@@ -56,9 +56,9 @@ function sendResponse(response, code, message) {
 var server = http.createServer(function(request, response) {
 
 	// build list of functions to be executed in parallel
-	var localCalls = {};
+	var localCalls = [];
 	for (var i in config.endPoints) {
-		localCalls[config.endPoints[i]] = getLocalPing(config.endPoints[i]);
+		localCalls[i] = getLocalPing(config.endPoints[i]);
 	}
 
 	// parallel execution of all the calls and send response when all terminated
